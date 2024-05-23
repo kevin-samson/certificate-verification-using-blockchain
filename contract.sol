@@ -34,6 +34,24 @@ contract DocumentRegistry {
         return documents[_hash].timestamp > 0;
     }
 
+    function changeDocumentStatus(bytes32 _hash, bool _valid) public {
+        require(_hash.length > 0, "Hash is required");
+        require(documents[_hash].timestamp > 0, "Document not found");
+        require(
+            msg.sender == address(0xbc56bb97DCAe27474b4bBDc2186D671BBbEC0d32),
+            "Unauthorized"
+        );
+
+        documents[_hash].valid = _valid;
+    }
+
+    function getDocumentStatus(bytes32 _hash) public view returns (bool) {
+        require(_hash.length > 0, "Hash is required");
+        require(documents[_hash].timestamp > 0, "Document not found");
+
+        return documents[_hash].valid;
+    }
+
     function validate(
         bytes32 _hash,
         bytes memory _signature
